@@ -1,14 +1,15 @@
 
 # Maintainer: lisuke <1657787678@qq.com>
 pkgname=xx-net
-pkgver=3.12.10
+epoch=1       # this is a meta package for dependencies
+pkgver=4.9.5  # https://github.com/XX-net/XX-Net/blob/master/code/default/download.md
 pkgrel=1
 
-pkgdesc="XX-Net, a web proxy tool."
+pkgdesc="Dependencies for XX-Net, a web proxy tool."
 arch=('i686' 'x86_64' 'armv7h')
-url="https://github.com/XX-net/XX-Net"
+url="https://github.com/XX-net/XX-Net/wiki/How-to-use"
 license=('unknown')
-depends=('python2')
+depends=('python')
 options=('!strip')
 
 optdepends=(
@@ -16,35 +17,11 @@ optdepends=(
 	'supervisor: A system for controlling process state under UNIX'
 	'miredo: a Teredo server/client, x86_64'
 	'miredo-debian: a Teredo client, armv7'
-		)
-makedepends=()
-checkdepends=()
 
-install=$pkgname.install
-
-
-source=(
-	"https://codeload.github.com/XX-net/XX-Net/tar.gz/$pkgver"
-	"XX-net.ini"
-		)
-noextract=()
-md5sums=(
-	'8574635127126af3124061a1508f8566'
-	'd439251c0022e4537231bbde87d36bac'
-		)
-validpgpkeys=()
-
-package() {
-	echo $pkgdir
-
-	mkdir -p $pkgdir/opt/XX-net/
-	cp -r ${srcdir}/XX-Net-$pkgver/* $pkgdir/opt/XX-net/
-
-	mkdir -p $pkgdir/usr/bin/
-	ln -s /opt/XX-net/xx_net.sh $pkgdir/usr/bin/xx_net
-
-	mkdir -p $pkgdir/etc/supervisor.d/
-	cp ${srcdir}/XX-net.ini $pkgdir/etc/supervisor.d/
-
-	mkdir -p /var/log/supervisor/
-}
+	'python-pyopenssl: suggested by XX-Net/wiki/How-to-use#关于-archlinux'
+	'python2-pyopenssl: suggested by XX-Net/wiki/How-to-use#关于-archlinux'  # deprecated
+	'libffi: suggested by XX-Net/wiki/How-to-use#关于-archlinux'
+	'pygtk: suggested by XX-Net/wiki/How-to-use#关于-archlinux'
+	'python2-notify: suggested by XX-Net/wiki/How-to-use#关于-archlinux'     # deprecated
+	'nss: suggested by XX-Net/wiki/How-to-use#关于-archlinux'
+)
