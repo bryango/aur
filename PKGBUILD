@@ -70,8 +70,10 @@ optdepends=(
     'tesseract'
     'zlib'
 )
-source=("local://Mathematica_${pkgver}_BNDL_LINUX.sh")
-md5sums=('23e6c72f6b948cefc4f588ec563af488')
+source=("local://Mathematica_${pkgver}_BNDL_LINUX.sh"
+        "Z98-mathematica-path.sh")
+md5sums=('23e6c72f6b948cefc4f588ec563af488'
+         'd38f38de6da65a30f8c95bd5d59df83d')
 options=("!strip")
 
 ## To build this package you need to place the mathematica-installer into your
@@ -102,10 +104,12 @@ prepare() {
 package() {
     msg2 "Running Mathematica installer"
     # https://reference.wolfram.com/language/tutorial/InstallingMathematica.html#650929293
-    sh ${srcdir}/Mathematica_${pkgver}_BNDL_LINUX.sh -- \
+    sh ${srcdir}/Mathematica_${pkgver}_BNDL_LINUX.sh \
+             --keep --target ${srcdir}/Mathematica_${pkgver}_BNDL_LINUX \
+        -- \
              -execdir=${pkgdir}/usr/bin \
              -targetdir=${pkgdir}/opt/Mathematica \
-             -auto
+             -auto # ... `--keep` extracted files
     msg2 "Errors related to 'xdg-icon-resource' and 'xdg-desktop-menu' are to be expected during Mathematica's installation."
     rm ${pkgdir}/opt/Mathematica/InstallErrors
 
@@ -115,15 +119,8 @@ package() {
     ln -s /opt/Mathematica/SystemFiles/Kernel/Binaries/Linux-x86-64/wolframscript
     cd ${pkgdir}/usr/bin
     rm *
-    ln -s /opt/Mathematica/Executables/math
-    ln -s /opt/Mathematica/Executables/mathematica
-    ln -s /opt/Mathematica/Executables/Mathematica
-    ln -s /opt/Mathematica/Executables/MathKernel
-    ln -s /opt/Mathematica/Executables/mcc
-    ln -s /opt/Mathematica/Executables/wolfram
-    ln -s /opt/Mathematica/Executables/WolframKernel
-    ln -s /opt/Mathematica/SystemFiles/Kernel/Binaries/Linux-x86-64/ELProver
-    ln -s /opt/Mathematica/SystemFiles/Kernel/Binaries/Linux-x86-64/wolframscript
+    # add to $PATH
+    install -D -t "${pkgdir}/etc/profile.d" "${srcdir}/Z98-mathematica-path.sh"
 
     msg2 "Setting up WolframScript"
     mkdir -p ${srcdir}/WolframScript
@@ -139,13 +136,14 @@ package() {
           ${pkgdir}/usr/share/desktop-directories \
           ${pkgdir}/usr/share/mime/packages
     cd ${pkgdir}/opt/Mathematica/SystemFiles/Installation
-    desktopFile='wolfram-mathematica13.desktop'
-    sed -Ei 's|^(\s*TryExec=).*|\1/usr/bin/Mathematica|g' $desktopFile
-    sed -Ei 's|^(\s*Exec=).*|\1/usr/bin/Mathematica %F|g' $desktopFile
+    desktopFile='wolfram-mathematica.desktop'
+    mv 'wolfram-mathematica13.desktop' $desktopFile                           # remove ${pkgver}
+    sed -Ei 's|^(\s*TryExec=).*|\1Mathematica|g' $desktopFile                 # find in $PATH
+    sed -Ei 's|^(\s*Exec=).*|\1Mathematica --singlelaunch %F|g' $desktopFile  # use single instance
     printf 'Categories=Science;Education;Languages;ArtificialIntelligence;Astronomy;Biology;Chemistry;ComputerScience;DataVisualization;Geography;ImageProcessing;Math;NumericalAnalysis;MedicalSoftware;Physics;ParallelComputer;\n' >> $desktopFile
-    printf 'StartupWMClass=Mathematica;\n' >> $desktopFile
+    printf 'StartupWMClass=Mathematica\n' >> $desktopFile                     # no semicolon
     cp $desktopFile ${pkgdir}/usr/share/applications/
-    cp wolfram-all.directory ${pkgdir}/usr/share/desktop-directories/
+    # cp wolfram-all.directory ${pkgdir}/usr/share/desktop-directories/       # unused
     cp *.xml ${pkgdir}/usr/share/mime/packages/
 
     msg2 "Copying icons"
