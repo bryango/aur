@@ -120,7 +120,7 @@ package() {
     cd ${pkgdir}/usr/bin
     rm *
     # add to $PATH
-    install -D -t "${pkgdir}/etc/profile.d" "${srcdir}/Z98-mathematica-path.sh"
+    install -Dm644 -t "${pkgdir}/etc/profile.d" "${srcdir}/Z98-mathematica-path.sh"
 
     msg2 "Setting up WolframScript"
     mkdir -p ${srcdir}/WolframScript
