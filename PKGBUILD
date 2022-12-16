@@ -8,7 +8,7 @@ url="http://www.tug.org/texlive/"
 arch=('any')
 license=('GPL')
 depends=('wget' 'xz')
-optdepends=(tk)
+optdepends=('tk: GUI support')
 makedepends=()
 replaces=()
 provides=('texlive-bin' 'texlive-htmlxml' "texlive-formatsextra=${pkgver}" $(pacman -Sgq texlive-most texlive-lang))
