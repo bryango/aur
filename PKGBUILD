@@ -8,7 +8,8 @@ url="http://www.tug.org/texlive/"
 arch=('any')
 license=('GPL')
 depends=('wget' 'xz')
-optdepends=('tk: GUI support')
+optdepends=('tk: GUI support'
+            'libxcrypt-compat: biber support')  ## https://stackoverflow.com/a/71205051
 makedepends=()
 replaces=()
 provides=('texlive-bin' 'texlive-htmlxml' "texlive-formatsextra=${pkgver}" $(pacman -Sgq texlive-most texlive-lang))
