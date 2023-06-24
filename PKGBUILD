@@ -8,7 +8,8 @@ pkgbase=nautilus-typeahead
 pkgname=(nautilus-typeahead libnautilus-extension-typeahead)
 packager="Albert Vaca Cintora <albertvaka@gmail.com>"
 pkgver=42.2
-pkgrel=2
+pkgrel=3
+epoch=1
 pkgdesc="Default file manager for GNOME - Patched to bring back the 'typeahead find' feature"
 url="https://wiki.gnome.org/Apps/Files"
 arch=(x86_64)
@@ -17,7 +18,7 @@ depends=(libgexiv2 gnome-desktop gvfs dconf tracker3 tracker3-miners
          gnome-autoar gst-plugins-base-libs libhandy libportal-gtk3)
 makedepends=(gobject-introspection git gtk-doc meson appstream-glib 'meson>=0.44.1' ninja)
 optdepends=('nautilus-sendto: right click to send files'
-            'python-nautilus-1: to use extensions in python')
+            'python-nautilus: to use extensions in python')
 checkdepends=(python-gobject)
 _commit=6a9ee939f5419262d7d0ce720572805f5f64569b
 source=("git+https://gitlab.gnome.org/GNOME/nautilus.git#commit=$_commit"
