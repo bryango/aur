@@ -25,7 +25,7 @@ Example `.git/config` of `~/.cache/yay/texlive-installer`:
 [remote "p13n"]
 	url = git@github.com:bryango/aur.git
 	fetch = +refs/heads/texlive-installer:refs/remotes/p13n/texlive-installer  ## restrict fetch heads
-	push = p13n/texlive-installer  ## push to branch: texlive-installer
+	push = master:texlive-installer  ## push to branch: texlive-installer
 [remote]
-	pushdefault = p13n             ## push to remote: p13n
+	pushdefault = p13n               ## push to remote: p13n
 ```
