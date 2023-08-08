@@ -2,9 +2,9 @@
 # Contributor: Stefan Husmann <stefan-husmann@t-online.de>
 
 pkgname=qpdfview-bzr
-pkgver=2070
+pkgver=2153
 pkgrel=1
-pkgdesc='A tabbed PDF viewer using the poppler library. (development version)'
+pkgdesc='A tabbed PDF viewer using the poppler library (development version)'
 arch=('i686' 'x86_64' 'armv7h')
 url='https://launchpad.net/qpdfview'
 license=('GPL2')
@@ -40,6 +40,8 @@ build() {
   if ! pkg-config --exists ddjvuapi; then
     local config="$config without_djvu"
   fi
+
+  sed -i 's/c++11/c++17/' qpdfview.pri
 
   lrelease-qt5 qpdfview.pro qpdfview.pro
   qmake-qt5 "CONFIG+=$config" qpdfview.pro
